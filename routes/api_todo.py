@@ -30,7 +30,7 @@ def index():
 
 @main.route('/add', methods=['POST'])
 def add():
-    form = request.json
+    form = request.form
     TodoApi.new(form)
     # t.save()
     # 蓝图中的 url_for 需要加上蓝图的名字，这里是 todo
