@@ -32,8 +32,6 @@ def index():
 def add():
     form = request.form
     TodoApi.new(form)
-    # t.save()
-    # 蓝图中的 url_for 需要加上蓝图的名字，这里是 todo
     return jsonify({
         "success": True,
         "message": "todo添加成功",
@@ -41,13 +39,25 @@ def add():
     })
 
 
-@main.route('/delete/<int:todo_id>/')
+@main.route('/update', methods=['POST'])
+def update():
+    todo_id = request.form.get("id")
+    TodoApi.update(todo_id, request.form)
+    return jsonify({
+        "success": True,
+        "message": "todo添加成功",
+        "code": 200
+    })
+
+
+@main.route('/delete')
 def delete(todo_id):
     """
     <int:todo_id> 的方式可以匹配一个 int 类型
     int 指定了它的类型，省略的话参数中的 todo_id 就是 str 类型
     """
     # 通过 id 删除 todo
+    todo_id = request.form.get("id")
     TodoApi.delete(todo_id)
     # 引用蓝图内部的路由函数的时候，可以省略名字只用 .
     return jsonify({
