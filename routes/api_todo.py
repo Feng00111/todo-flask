@@ -22,7 +22,6 @@ main = Blueprint('api', __name__)
 
 @main.route('/all')
 def index():
-    # 查找所有的 todo 并返回
     todo_list = TodoApi.all()
     todos = [t.__dict__ for t in todo_list]
     return jsonify(todos)
@@ -30,24 +29,42 @@ def index():
 
 @main.route('/add', methods=['POST'])
 def add():
-    form = request.form
-    TodoApi.new(form)
-    return jsonify({
-        "success": True,
-        "message": "todo添加成功",
-        "code": 200
-    })
+    try:
+        form = request.form
+        TodoApi.new(form)
+    except Exception as e:
+        print(e)
+        return jsonify({
+            "success": False,
+            "message": "todo添加失败",
+            "code": 500
+        })
+    else:
+        return jsonify({
+            "success": True,
+            "message": "todo添加成功",
+            "code": 200
+        })
 
 
 @main.route('/update', methods=['POST'])
 def update():
-    todo_id = request.form.get("id")
-    TodoApi.update(todo_id, request.form)
-    return jsonify({
-        "success": True,
-        "message": "todo添加成功",
-        "code": 200
-    })
+    try:
+        todo_id = request.form.get("id")
+        TodoApi.update(todo_id, request.form)
+    except Exception as e:
+        print(e)
+        return jsonify({
+            "success": False,
+            "message": "todo更新失败",
+            "code": 500
+        })
+    else:
+        return jsonify({
+            "success": True,
+            "message": "todo更新成功",
+            "code": 200
+        })
 
 
 @main.route('/delete')
@@ -56,12 +73,19 @@ def delete(todo_id):
     <int:todo_id> 的方式可以匹配一个 int 类型
     int 指定了它的类型，省略的话参数中的 todo_id 就是 str 类型
     """
-    # 通过 id 删除 todo
-    todo_id = request.form.get("id")
-    TodoApi.delete(todo_id)
-    # 引用蓝图内部的路由函数的时候，可以省略名字只用 .
-    return jsonify({
-        "success": True,
-        "message": "todo删除成功",
-        "code": 200
-    })
+    try:
+        todo_id = request.form.get("id")
+        TodoApi.delete(todo_id)
+    except Exception as e:
+        print(e)
+        return jsonify({
+            "success": False,
+            "message": "todo删除失败",
+            "code": 500
+        })
+    else:
+        return jsonify({
+            "success": True,
+            "message": "todo删除成功",
+            "code": 200
+        })
