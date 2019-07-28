@@ -1,5 +1,4 @@
 import time
-import uuid
 from models import Model
 
 # 针对我们的数据 TODO
@@ -83,7 +82,7 @@ class Todo(Model):
 
 class TodoApi(Model):
     def __init__(self, form, user_id=-1):
-        self.id = form.get('id', str(uuid.uuid4()))
+        self.id = form.get('id', None)
         self.todothing = form.get('todothing', '')
         self.time = form.get('time', '')
         # 和别的数据关联的方式, 用 user_id 表明拥有它的 user 实例

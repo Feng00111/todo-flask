@@ -1,4 +1,5 @@
 import json
+import uuid
 
 
 def save(data, path):
@@ -152,26 +153,8 @@ class Model(object):
         把 self 添加进去并且保存进文件
         """
         models = self.all()
-        li = [m.__dict__ for m in models]
-        li.append(self.__dict__)
-        path = self.db_path()
-        save(li, path)
-
-    # def save(self):
-        """
-        用 all 方法读取文件中的所有 model 并生成一个 list
-        把 self 添加进去并且保存进文件
-        """
-        models = self.all()
         if self.id is None:
-            # 设置 self.id
-            # 先看看是否是空 list
-            if len(models) == 0:
-                # 我们让第一个元素的 id 为 1（当然也可以为 0）
-                self.id = 1
-            else:
-                m = models[-1]
-                self.id = m.id + 1
+            self.id = str(uuid.uuid4())
             models.append(self)
         else:
             index = -1
