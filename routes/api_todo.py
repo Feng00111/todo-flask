@@ -68,13 +68,13 @@ def update():
 
 
 @main.route('/delete')
-def delete(todo_id):
+def delete():
     """
     <int:todo_id> 的方式可以匹配一个 int 类型
     int 指定了它的类型，省略的话参数中的 todo_id 就是 str 类型
     """
     try:
-        todo_id = request.json.get("id")
+        todo_id = request.args.get("id")
         TodoApi.delete(todo_id)
     except Exception as e:
         print(e)
