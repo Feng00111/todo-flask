@@ -145,8 +145,19 @@ class Model(object):
         # copy 会复制一份新数据并返回
         d = self.__dict__.copy()
         return d
-
+    
     def save(self):
+        """
+        用 all 方法读取文件中的所有 model 并生成一个 list
+        把 self 添加进去并且保存进文件
+        """
+        models = self.all()
+        li = [m.__dict__ for m in models]
+        li.append(self.__dict__)
+        path = self.db_path()
+        save(li, path)
+
+    # def save(self):
         """
         用 all 方法读取文件中的所有 model 并生成一个 list
         把 self 添加进去并且保存进文件

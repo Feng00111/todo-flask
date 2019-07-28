@@ -80,9 +80,10 @@ class Todo(Model):
         t.save()
         return t
 
+
 class TodoApi(Model):
     def __init__(self, form, user_id=-1):
-        self.id = form.get('id', uuid.uuid4())
+        self.id = form.get('id', str(uuid.uuid4()))
         self.todothing = form.get('todothing', '')
         self.time = form.get('time', '')
         # 和别的数据关联的方式, 用 user_id 表明拥有它的 user 实例

@@ -11,7 +11,7 @@ from flask import (
 # 这样的好处是方便和一致性
 
 from models.todo import TodoApi
-
+import traceback
 
 # 创建一个 蓝图对象 并且路由定义在蓝图对象中
 # 然后在 flask 主代码中「注册蓝图」来使用
@@ -30,9 +30,9 @@ def index():
 @main.route('/add', methods=['POST'])
 def add():
     try:
-        form = request.form
-        TodoApi.new(form)
+        t = TodoApi.new(request.json)
     except Exception as e:
+        traceback.print_exc()
         print(e)
         return jsonify({
             "success": False,
@@ -50,8 +50,8 @@ def add():
 @main.route('/update', methods=['POST'])
 def update():
     try:
-        todo_id = request.form.get("id")
-        TodoApi.update(todo_id, request.form)
+        todo_id = request.json.get("id")
+        TodoApi.update(todo_id, request.json)
     except Exception as e:
         print(e)
         return jsonify({
@@ -74,7 +74,7 @@ def delete(todo_id):
     int 指定了它的类型，省略的话参数中的 todo_id 就是 str 类型
     """
     try:
-        todo_id = request.form.get("id")
+        todo_id = request.json.get("id")
         TodoApi.delete(todo_id)
     except Exception as e:
         print(e)
